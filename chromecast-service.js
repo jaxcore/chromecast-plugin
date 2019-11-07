@@ -5,67 +5,55 @@ var ScannerPromise = require('castv2-player').ScannerPromise();
 
 var chromecastServiceInstance;
 
-class ChromeCastService2 extends Client {
-	constructor(a) {
-		super(a)
+class ChromeCastService extends Client {
+	constructor(config) {
+		super()
+		this.clients = {};
+		this.log = plugin.createLogger('Chromecast Service');
+		this.log('create', config);
+	}
+	scan(callback) {
+		// 'Family room TV'
+		ScannerPromise().then((device) => {
+			this.log('found cast', device.id);
+			callback(device);
+		});
+	}
+	
+	create(id, device) {
+		let config = {
+			id: id,
+			chromecastId: device.id,
+			name: device.name
+		};
+		let client = new ChromeCastClient(config, device);
+		this.clients[id] = client;
+		return client;
+	}
+	
+	connect(device, callback) {
+		log('connecting to', device.name);
+		
+		// ScannerPromise(device.name).then((dev) => {
+		// 	if (device.id === dev.id) {
+		// 		if (this.clients[dev.id]) {
+		// 			//this.clients[id].destroy();
+		// 		}
+		// 		log('connecting', dev.id);
+		// 		this.clients[dev.id] = new ChromeCastDevice(dev);
+		// 		this.clients[dev.id].once('status', (x) => {
+		// 			console.log('STATUS', x);
+		// 			callback(this.clients[dev.id]);
+		// 		});
+		// 	}
+		// }).catch(function(err) {
+		// 	log('connect err', err);
+		// });
+	}
+	
+	disconnect(id, callback) {
 	}
 }
-
-function ChromeCastService(config) {
-	this.constructor();
-	this.clients = {};
-	this.log = plugin.createLogger('Chromecast Service');
-	this.log('create', config);
-}
-
-ChromeCastService.prototype = new Client();
-ChromeCastService.prototype.constructor = Client;
-
-
-ChromeCastService.prototype.scan = function (callback) {
-	// 'Family room TV'
-	ScannerPromise().then((device) => {
-		this.log('found cast', device.id);
-		callback(device);
-	});
-};
-
-ChromeCastService.prototype.create = function (id, device) {
-	let config = {
-		id: id,
-		chromecastId: device.id,
-		name: device.name
-	};
-	let client = new ChromeCastClient(config, device);
-	this.clients[id] = client;
-	return client;
-};
-
-ChromeCastService.prototype.connect = function (device, callback) {
-	log('connecting to', device.name);
-	
-	// ScannerPromise(device.name).then((dev) => {
-	// 	if (device.id === dev.id) {
-	// 		if (this.clients[dev.id]) {
-	// 			//this.clients[id].destroy();
-	// 		}
-	// 		log('connecting', dev.id);
-	// 		this.clients[dev.id] = new ChromeCastDevice(dev);
-	// 		this.clients[dev.id].once('status', (x) => {
-	// 			console.log('STATUS', x);
-	// 			callback(this.clients[dev.id]);
-	// 		});
-	// 	}
-	// }).catch(function(err) {
-	// 	log('connect err', err);
-	// });
-};
-
-ChromeCastService.prototype.disconnect = function (id, callback) {
-
-};
-
-
 
 ChromeCastService.id = function(serviceConfig) {
 	let id = 'chromecast:'+serviceConfig.name;
@@ -117,7 +105,6 @@ ChromeCastService.getOrCreateInstance = function(serviceId, serviceConfig, callb
 			console.log('connect err', err);
 			callback(err);
 		});
-		
 		
 		// timeout
 		

@@ -3,19 +3,69 @@ var castService = require('./service');
 
 castService.scan(function(device) {
 	console.log('device:', device);
+
+	if (device.name !== 'Family room TV') {
+		console.log('found other');
+		return;
+	}
 	
-	if (device.name !== 'Family room TV') return;
+	console.log('connecting to ...');
+	castService.on('connected', function() {
+		console.log('x');
+		process.exit();
+	});
 	
-	castService.connect(device, function(cast) {
-		console.log('cast:', cast.state);
+	var onConnect = function(cast) {
+		
+		console.log('cast service:', cast);
+		// process.exit();
 		
 		cast.setState({volumeIncrement:4});
 		
-		Spin.connect(function (spin) {
+		Spin.connectBLE(function (spin) {
 			console.log('spin connected', spin.id);
+			
+			spin.flash([0,255,0]);
+			
+			cast.on('volume', function(volumePercent) {
+				console.log('VOLUME', volumePercent);
+				spin.scale(volumePercent, [0,0,255], [255,0,0], [255,255,255]);
+			});
+			
+			cast.on('muted', function(muted) {
+				console.log('MUTED', muted);
+				if (muted) {
+					spin.dial(cast.state.volumePercent, [255,255,0], [0,0,0], [255,255,255]);
+					// spin.lightsOn([255,255,0]);
+				}
+				else {
+					// spin.lightsOff();
+					spin.scale(cast.state.volumePercent, [0,0,255], [255,0,0], [255,255,255]);
+				}
+			});
+			
+			cast.on('play', function(playing) {
+				console.log('PLAY', playing);
+				if (playing) spin.flash([0,255,0]);
+			});
+			
+			cast.on('pause', function(paused) {
+				console.log('PAUSE', paused);
+				if (paused) spin.flash([0,255,255]);
+				else spin.flash([0,255,0]);
+			});
 			
 			spin.on('spin', function (direction, position) {
 				console.log('spin', direction, position);
+				if (cast.state.muted) {
+					// spin.flash([255,255,0]);
+					spin.dial(cast.state.volumePercent, [255,255,0], [0,0,0], [255,255,255]);
+					return;
+				}
+				if (cast.state.paused) {
+					spin.flash([0,255,255]);
+					return;
+				}
 				if (spin.state.buttonPushed) {
 					if (spin.buffer(direction)) {
 						if (!cast.didSeek && !cast._seekPosition) {
@@ -64,5 +114,9 @@ castService.scan(function(device) {
 			
 			
 		});
-	});
+	};
+	
+	castService.connect(device, onConnect);
+	
+	// setTimeout(onConnect, 3000);
 });

@@ -1,7 +1,7 @@
 {
-  "name": "chromecast-plugin",
-  "version": "0.0.1",
-  "description": "Chromecast plugin for Jaxcore Spin",
+  "name": "jaxcore-chromecast-plugin",
+  "version": "0.0.2",
+  "description": "Chromecast plugin for Jaxcore",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,6 @@
   "author": "Jaxcore",
   "license": "MIT",
   "dependencies": {
-    "castv2-player": "^2.0.5"
+    "castv2-player": "^2.1.0"
   }
 }

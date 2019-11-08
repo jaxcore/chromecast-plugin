@@ -7,7 +7,7 @@ var chromecastServiceInstance;
 
 class ChromeCastService extends Client {
 	constructor(config) {
-		super()
+		super();
 		this.clients = {};
 		this.log = plugin.createLogger('Chromecast Service');
 		this.log('create', config);

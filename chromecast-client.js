@@ -162,7 +162,8 @@ class ChromeCastClient extends Client {
 				});
 				this.emit('disconnect');
 			}
-			process.exit();
+			
+			// process.exit();
 		});
 	}
 	

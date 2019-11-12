@@ -5,8 +5,8 @@ class ChromecastAdapter extends Adapter {
 		return {};
 	}
 	
-	constructor(config, theme, devices, services) {
-		super(config, theme, devices, services);
+	constructor(store, config, theme, devices, services) {
+		super(store, config, theme, devices, services);
 		const {spin} = devices;
 		const {chromecast} = services;
 		spin.rotateRainbow(2);

@@ -1,9 +1,9 @@
 module.exports = {
 	services: {
-		chromecast: require('./chromecast-service')
-	},
-	stores: {
-		chromecast: 'client'
+		chromecast: {
+			service: require('./chromecast-service'),
+			storeType: 'client'
+		}
 	},
 	adapters: {
 		chromecast: require('./chromecast-adapter')

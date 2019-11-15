@@ -1,4 +1,4 @@
-const Adapter = require('jaxcore-plugin').Adapter;
+const {Adapter} = require('jaxcore-plugin');
 
 class ChromecastAdapter extends Adapter {
 	static getDefaultState() {
@@ -9,7 +9,7 @@ class ChromecastAdapter extends Adapter {
 		super(store, config, theme, devices, services);
 		const {spin} = devices;
 		const {chromecast} = services;
-		spin.rotateRainbow(2);
+		spin.rainbow(2);
 		spin.lightsOff();
 		
 		this.addEvents(chromecast, {

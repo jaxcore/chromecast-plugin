@@ -1,4 +1,4 @@
-const {Service, createLogger} = require('jaxcore-plugin');
+const {Service, createLogger} = require('jaxcore');
 var ChromeCastClient = require('./chromecast-client');
 var ScannerPromise = require('castv2-player').ScannerPromise();
 

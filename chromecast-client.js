@@ -1,5 +1,4 @@
-const {Client, createLogger} = require('jaxcore-plugin');
-// var castStore = plugin.createStore('Cast Store');
+const {Client, createLogger} = require('jaxcore');
 var MediaPlayer = require('castv2-player').MediaPlayer();
 
 const schema = {

@@ -71,7 +71,7 @@ class ChromecastAdapter extends Adapter {
 	
 	static getServicesConfig(adapterConfig) {
 		return {
-			chromecast: adapterConfig.settings.services.chromecast
+			chromecast: adapterConfig.profile.services.chromecast
 		};
 	};
 }

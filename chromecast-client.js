@@ -10,6 +10,10 @@ const schema = {
 		type: 'string',
 		defaultValue: ''
 	},
+	// chromecastId: {
+	// 	type: 'string',
+	// 	defaultValue: ''
+	// },
 	connected: {
 		type: 'boolean',
 		defaultValue: false
@@ -63,68 +67,6 @@ const schema = {
 class ChromeCastClient extends Client {
 	constructor(store, defaults, device) {
 		super(schema, store, defaults);
-		
-		// this.setStore(castStore);
-		// this.setStates({
-		// 	id: {
-		// 		type: 'string',
-		// 		defaultValue: ''
-		// 	},
-		// 	name: {
-		// 		type: 'string',
-		// 		defaultValue: ''
-		// 	},
-		// 	connected: {
-		// 		type: 'boolean',
-		// 		defaultValue: false
-		// 	},
-		// 	muted: {
-		// 		type: 'boolean',
-		// 		defaultValue: false
-		// 	},
-		// 	volume: {
-		// 		type: 'int',
-		// 		defaultValue: null
-		// 	},
-		// 	volumePercent: {
-		// 		type: 'float',
-		// 		defaultValue: 0
-		// 	},
-		// 	minVolume: {
-		// 		type: 'integer',
-		// 		defaultValue: 0,
-		// 		maximumValue: 100,
-		// 		minimumValue: 0
-		// 	},
-		// 	maxVolume: {
-		// 		type: 'integer',
-		// 		defaultValue: 100,
-		// 		maximumValue: 100,
-		// 		minimumValue: 0
-		// 	},
-		// 	volumeIncrement: {
-		// 		type: 'integer',
-		// 		defaultValue: 2
-		// 	},
-		// 	playing: {
-		// 		type: 'boolean',
-		// 		defaultValue: false
-		// 	},
-		// 	paused: {
-		// 		type: 'boolean',
-		// 		defaultValue: false
-		// 	},
-		// 	position: {
-		// 		type: 'float',
-		// 		defaultValue: 0
-		// 	},
-		// 	duration: {
-		// 		type: 'float',
-		// 		defaultValue: 0
-		// 	}
-		// }, config);
-		
-		// this.id = this.state.id;
 		
 		this.log = createLogger('Chromecast:'+device.name);
 		this.log('create', this.id);
@@ -325,6 +267,9 @@ class ChromeCastClient extends Client {
 		this.player.seekPromise(s).then((r) => {
 			this.log('seek r', r);
 		});
+	}
+	destroy() {
+		this.player.close();
 	}
 }
 

@@ -12,6 +12,7 @@ class ChromeCastService extends Service {
 		this.log = createLogger('Chromecast Service');
 		this.log('create', config);
 	}
+	
 	scan(callback) {
 		// 'Family room TV'
 		ScannerPromise().then((device) => {
@@ -20,10 +21,20 @@ class ChromeCastService extends Service {
 		});
 	}
 	
+	static scan() {
+		// 'Family room TV'
+		return ScannerPromise();
+		// .then((device) => {
+		// ScannerPromise().then((device) => {
+		// 	this.log('found cast', device.id);
+		// 	callback(device);
+		// });
+	}
+	
 	create(id, device, serviceStore) {
 		let config = {
 			id: id,
-			chromecastId: device.id,
+			// chromecastId: device.id,
 			name: device.name
 		};
 		let client = new ChromeCastClient(serviceStore, config, device);
@@ -32,7 +43,7 @@ class ChromeCastService extends Service {
 	}
 	
 	connect(device, callback) {
-		this.log('connecting to', device.name);
+		this.log('connecting to', device.castName);
 		
 		// ScannerPromise(device.name).then((dev) => {
 		// 	if (device.id === dev.id) {
@@ -83,7 +94,9 @@ class ChromeCastService extends Service {
 			
 			let name = serviceConfig.name;
 			ScannerPromise(name).then((dev) => {
-				if (dev.name === serviceConfig.name) {
+				if (
+					dev.name === serviceConfig.name
+				) {
 					console.log('found dev', dev);
 					clearTimeout(timeout);
 					console.log('connecting', dev.id);

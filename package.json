@@ -9,7 +9,6 @@
   "author": "Jaxcore",
   "license": "MIT",
   "dependencies": {
-    "jaxcore": "git+https://github.com/jaxcore/jaxcore#master",
     "castv2-player": "^2.1.0"
   }
 }

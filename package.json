@@ -9,6 +9,7 @@
   "author": "Jaxcore",
   "license": "MIT",
   "dependencies": {
-    "castv2-player": "^2.1.0"
+    "castv2-player": "^2.1.0",
+    "jaxcore": "0.0.2"
   }
 }
